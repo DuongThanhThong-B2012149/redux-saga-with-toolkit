@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
+import { selectCityMap } from "../../city/citySlice";
 import StudentTable from "../components/StudentTable";
 import { selectStudentSlice, studentActions } from "../studentSlice";
 
@@ -16,6 +17,7 @@ const ListPage = (props: Props) => {
   const dispatch = useAppDispatch();
   const { list, pagination, filter, loading } =
     useAppSelector(selectStudentSlice);
+  const cityMap = useAppSelector(selectCityMap);
   useEffect(() => {
     dispatch(studentActions.fetchStudentList(filter));
   }, [dispatch, filter]);
@@ -57,7 +59,7 @@ const ListPage = (props: Props) => {
         </Button>
       </Box>
       {/* StudentTable */}
-      <StudentTable studentList={list} />
+      <StudentTable studentList={list} cityMap={cityMap} />
       {/* Pagination */}
       <Box
         mt={2}
