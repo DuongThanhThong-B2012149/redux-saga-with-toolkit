@@ -6,8 +6,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
+import studentApi from "../../../api/studentApi";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { ListParams } from "../../../models";
+import { ListParams, Student } from "../../../models";
 import { selectCityMap, selectCitySlice } from "../../city/citySlice";
 import StudentFilter from "../components/StudentFilter";
 import StudentTable from "../components/StudentTable";
@@ -40,6 +41,19 @@ const ListPage = (props: Props) => {
 
   const handleFilterChange = (newFilter: ListParams) => {
     dispatch(studentActions.setFilter(newFilter));
+  };
+
+  const handleRemoveStudent = async (student: Student) => {
+    try {
+      // Remove student API
+      await studentApi.remove(student.id || "");
+
+      // Trigger to re-fetch student list with current filter
+      dispatch(studentActions.setFilter({ ...filter }));
+    } catch (error) {
+      // Toast error
+      console.log("Failed to fetch student", error);
+    }
   };
   return (
     <Box
@@ -78,7 +92,11 @@ const ListPage = (props: Props) => {
         />
       </Box>
       {/* StudentTable */}
-      <StudentTable studentList={list} cityMap={cityMap} />
+      <StudentTable
+        studentList={list}
+        cityMap={cityMap}
+        onRemove={handleRemoveStudent}
+      />
       {/* Pagination */}
       <Box
         mt={2}
