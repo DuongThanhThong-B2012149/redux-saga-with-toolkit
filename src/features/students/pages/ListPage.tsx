@@ -34,8 +34,6 @@ const ListPage = (props: Props) => {
       {/* StudentTable */}
       <StudentTable studentList={list} />
       {/* Pagination */}
-      12312312312
-      <Pagination count={10} page={page} onChange={handleChange} />
     </Box>
   );
 };
