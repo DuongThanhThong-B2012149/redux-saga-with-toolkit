@@ -7,7 +7,9 @@ import {
 } from "@mui/material";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
-import { selectCityMap } from "../../city/citySlice";
+import { ListParams } from "../../../models";
+import { selectCityMap, selectCitySlice } from "../../city/citySlice";
+import StudentFilter from "../components/StudentFilter";
 import StudentTable from "../components/StudentTable";
 import { selectStudentSlice, studentActions } from "../studentSlice";
 
@@ -18,6 +20,7 @@ const ListPage = (props: Props) => {
   const { list, pagination, filter, loading } =
     useAppSelector(selectStudentSlice);
   const cityMap = useAppSelector(selectCityMap);
+  const { list: cityList } = useAppSelector(selectCitySlice);
   useEffect(() => {
     dispatch(studentActions.fetchStudentList(filter));
   }, [dispatch, filter]);
@@ -29,6 +32,10 @@ const ListPage = (props: Props) => {
         _page: page,
       })
     );
+  };
+
+  const handleSearchChange = (newFilter: ListParams) => {
+    dispatch(studentActions.setFilterWithDebounce(newFilter));
   };
   return (
     <Box
@@ -57,6 +64,13 @@ const ListPage = (props: Props) => {
         <Button variant="contained" color="primary">
           Add new student
         </Button>
+      </Box>
+      <Box my={3}>
+        <StudentFilter
+          cityList={cityList}
+          filter={filter}
+          onSearchChange={handleSearchChange}
+        />
       </Box>
       {/* StudentTable */}
       <StudentTable studentList={list} cityMap={cityMap} />
