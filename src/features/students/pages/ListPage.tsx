@@ -1,4 +1,10 @@
-import { Box, Button, Pagination, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  LinearProgress,
+  Pagination,
+  Typography,
+} from "@mui/material";
 import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import StudentTable from "../components/StudentTable";
@@ -8,17 +14,36 @@ interface Props {}
 
 const ListPage = (props: Props) => {
   const dispatch = useAppDispatch();
-  const { list } = useAppSelector(selectStudentSlice);
+  const { list, pagination, filter, loading } =
+    useAppSelector(selectStudentSlice);
   useEffect(() => {
+    dispatch(studentActions.fetchStudentList(filter));
+  }, [dispatch, filter]);
+
+  const handlePageChange = (e: any, page: number) => {
     dispatch(
-      studentActions.fetchStudentList({
-        _page: 1,
-        _limit: 15,
+      studentActions.setFilter({
+        ...filter,
+        _page: page,
       })
     );
-  }, []);
+  };
   return (
-    <Box>
+    <Box
+      sx={{
+        position: "relative",
+      }}
+    >
+      {loading && (
+        <LinearProgress
+          sx={{
+            position: "absolute",
+            left: 0,
+            right: 0,
+            top: "-8px",
+          }}
+        />
+      )}
       <Box
         sx={{
           display: "flex",
@@ -34,6 +59,22 @@ const ListPage = (props: Props) => {
       {/* StudentTable */}
       <StudentTable studentList={list} />
       {/* Pagination */}
+      <Box
+        mt={2}
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        <Pagination
+          color="primary"
+          count={Math.ceil(pagination._totalRows / pagination._limit)}
+          page={pagination._page}
+          onChange={handlePageChange}
+          variant="outlined"
+          shape="rounded"
+        />
+      </Box>
     </Box>
   );
 };
