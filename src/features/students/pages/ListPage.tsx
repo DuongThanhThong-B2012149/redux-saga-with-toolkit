@@ -1,5 +1,5 @@
-import { Box, Button, Paper, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import { Box, Button, Pagination, Typography } from "@mui/material";
+import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import StudentTable from "../components/StudentTable";
 import { selectStudentSlice, studentActions } from "../studentSlice";
@@ -34,6 +34,8 @@ const ListPage = (props: Props) => {
       {/* StudentTable */}
       <StudentTable studentList={list} />
       {/* Pagination */}
+      12312312312
+      <Pagination count={10} page={page} onChange={handleChange} />
     </Box>
   );
 };
