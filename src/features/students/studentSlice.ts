@@ -50,6 +50,9 @@ const studentSlice = createSlice({
     setFilter(state, action: PayloadAction<ListParams>) {
       state.filter = action.payload;
     },
+
+    // Action này để hỗ trợ handle trong saga
+    setFilterWithDebounce(state, action: PayloadAction<ListParams>) {},
   },
 });
 
