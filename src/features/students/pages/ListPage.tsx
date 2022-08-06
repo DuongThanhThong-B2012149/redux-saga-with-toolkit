@@ -37,6 +37,10 @@ const ListPage = (props: Props) => {
   const handleSearchChange = (newFilter: ListParams) => {
     dispatch(studentActions.setFilterWithDebounce(newFilter));
   };
+
+  const handleFilterChange = (newFilter: ListParams) => {
+    dispatch(studentActions.setFilter(newFilter));
+  };
   return (
     <Box
       sx={{
@@ -70,6 +74,7 @@ const ListPage = (props: Props) => {
           cityList={cityList}
           filter={filter}
           onSearchChange={handleSearchChange}
+          onChange={handleFilterChange}
         />
       </Box>
       {/* StudentTable */}
