@@ -10,8 +10,8 @@ import {
 export interface StudentState {
   loading: boolean;
   list: Student[];
-  filter?: ListParams;
-  pagination?: PaginationParams;
+  filter: ListParams;
+  pagination: PaginationParams;
 }
 
 const initialState: StudentState = {
@@ -39,6 +39,7 @@ const studentSlice = createSlice({
       state,
       action: PayloadAction<ListResponse<Student>>
     ) {
+      state.loading = false;
       state.list = action.payload.data;
       state.pagination = action.payload.pagination;
     },
