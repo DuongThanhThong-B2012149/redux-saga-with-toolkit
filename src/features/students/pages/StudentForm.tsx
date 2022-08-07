@@ -3,6 +3,7 @@ import { Box } from "@mui/system";
 import React from "react";
 import { Control, useForm } from "react-hook-form";
 import InputField from "../../../components/FormFields/InputField";
+import RadioGroupField from "../../../components/FormFields/RadioGroupField";
 import { Student } from "../../../models";
 
 interface Props {
@@ -44,10 +45,14 @@ const StudentForm = ({ initialValues, onSubmit }: Props) => {
           type="number"
         />
 
-        <InputField
+        <RadioGroupField
           name="gender"
           control={control as Control<any>}
           label="Gender"
+          options={[
+            { label: "Male", value: "male" },
+            { label: "Female", value: "female" },
+          ]}
         />
         <InputField
           name="city"
