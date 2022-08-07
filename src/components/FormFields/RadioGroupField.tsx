@@ -5,11 +5,8 @@ import {
   FormLabel,
   Radio,
   RadioGroup,
-  TextField,
 } from "@mui/material";
-import { InputHTMLAttributes } from "react";
 import { Control, useController } from "react-hook-form";
-import { Student } from "../../models";
 
 interface RadioOption {
   label?: string;

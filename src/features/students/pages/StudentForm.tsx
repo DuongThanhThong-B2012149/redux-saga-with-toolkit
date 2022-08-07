@@ -2,9 +2,12 @@ import { Button } from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
 import { Control, useForm } from "react-hook-form";
+import { useAppSelector } from "../../../app/hooks";
 import InputField from "../../../components/FormFields/InputField";
 import RadioGroupField from "../../../components/FormFields/RadioGroupField";
+import SelectField from "../../../components/FormFields/SelectField";
 import { Student } from "../../../models";
+import { selectCityOption } from "../../city/citySlice";
 
 interface Props {
   initialValues?: Student;
@@ -12,6 +15,7 @@ interface Props {
 }
 
 const StudentForm = ({ initialValues, onSubmit }: Props) => {
+  const cityOption = useAppSelector(selectCityOption);
   const { control, handleSubmit } = useForm<Student>({
     defaultValues: initialValues,
   });
@@ -54,11 +58,14 @@ const StudentForm = ({ initialValues, onSubmit }: Props) => {
             { label: "Female", value: "female" },
           ]}
         />
-        <InputField
+
+        <SelectField
           name="city"
           control={control as Control<any>}
           label="City"
+          options={cityOption}
         />
+
         <Box mt={3}>
           <Button type="submit" variant="contained" color="primary">
             Save
