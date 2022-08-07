@@ -1,7 +1,7 @@
 import { ChevronLeft } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import studentApi from "../../../api/studentApi";
 import { Student } from "../../../models";
 import StudentForm from "./StudentForm";
@@ -12,7 +12,7 @@ const AddEditPage = (props: Props) => {
   const { studentId } = useParams<{ studentId: string }>();
   const isEdit = Boolean(studentId);
   const [student, setStudent] = useState<Student>();
-
+  const navigate = useNavigate();
   // Handle get data and check add or edit page
   useEffect(() => {
     if (!studentId) return;
@@ -27,7 +27,15 @@ const AddEditPage = (props: Props) => {
   }, [studentId]);
 
   // Handle Form
-  const handleStudentFormSubmit = (formValues: Student) => {};
+  const handleStudentFormSubmit = async (formValues: Student) => {
+    if (isEdit) {
+      await studentApi.update(formValues);
+      // throw new Error("My testing error");
+    } else {
+      await studentApi.add(formValues);
+    }
+    navigate("/admin/students");
+  };
 
   const initialValues: Student = {
     name: "",
