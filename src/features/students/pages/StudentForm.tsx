@@ -8,16 +8,49 @@ import RadioGroupField from "../../../components/FormFields/RadioGroupField";
 import SelectField from "../../../components/FormFields/SelectField";
 import { Student } from "../../../models";
 import { selectCityOption } from "../../city/citySlice";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 interface Props {
   initialValues?: Student;
   onSubmit?: (formValues: Student) => void;
 }
 
+const schema = yup
+  .object({
+    name: yup
+      .string()
+      .required("Please enter your name.")
+      .test("two-words", "please enter at least two words", (value) => {
+        if (!value) return true;
+        const parts = value.split(" ") || [];
+        return parts.filter((x) => Boolean(x)).length >= 2;
+      }),
+    age: yup
+      .number()
+      .positive("Please enter positive number")
+      .integer("Please enter integer number")
+      .min(18, "Min is 18")
+      .max(60, "Max is 60")
+      .required("age is required")
+      .typeError("Please enter a valid number"),
+    mark: yup
+      .number()
+      .min(0, "Min is 0")
+      .max(10, "Max is 10")
+      .typeError("Please enter a valid number"),
+    gender: yup
+      .string()
+      .oneOf(["male", "female"])
+      .required("Gender is required"),
+    city: yup.string().required("Please select city"),
+  })
+  .required();
 const StudentForm = ({ initialValues, onSubmit }: Props) => {
   const cityOption = useAppSelector(selectCityOption);
   const { control, handleSubmit } = useForm<Student>({
     defaultValues: initialValues,
+    resolver: yupResolver(schema),
   });
 
   const handleFormSubmit = (formValues: Student) => {
