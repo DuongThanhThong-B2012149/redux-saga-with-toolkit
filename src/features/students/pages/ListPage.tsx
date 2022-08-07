@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import studentApi from "../../../api/studentApi";
 import { useAppDispatch, useAppSelector } from "../../../app/hooks";
 import { ListParams, Student } from "../../../models";
@@ -18,6 +19,7 @@ interface Props {}
 
 const ListPage = (props: Props) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { list, pagination, filter, loading } =
     useAppSelector(selectStudentSlice);
   const cityMap = useAppSelector(selectCityMap);
@@ -55,6 +57,10 @@ const ListPage = (props: Props) => {
       console.log("Failed to fetch student", error);
     }
   };
+
+  const handleClickEdit = (student: Student) => {
+    navigate(`${student.id}`);
+  };
   return (
     <Box
       sx={{
@@ -79,9 +85,16 @@ const ListPage = (props: Props) => {
         }}
       >
         <Typography variant="h4">Students</Typography>
-        <Button variant="contained" color="primary">
-          Add new student
-        </Button>
+        <Link
+          to="add"
+          style={{
+            textDecoration: "none",
+          }}
+        >
+          <Button variant="contained" color="primary">
+            Add new student
+          </Button>
+        </Link>
       </Box>
       <Box my={3}>
         <StudentFilter
@@ -96,6 +109,7 @@ const ListPage = (props: Props) => {
         studentList={list}
         cityMap={cityMap}
         onRemove={handleRemoveStudent}
+        onEdit={handleClickEdit}
       />
       {/* Pagination */}
       <Box
